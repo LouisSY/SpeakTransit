@@ -15,8 +15,8 @@ struct CameraView: View {
     private static let barHeightFactor = 0.15
     
     @State private var currentShutterSpeed: String = "1/100"
-    let shutterSpeeds1 = [10, 15, 30, 50, 60, 100, 125]
-    let shutterSpeeds2 = [200, 400, 500, 1000, 2000, 5000]
+    let shutterSpeeds1 = [1, 3, 5, 10, 15, 30, 50, 60, 100]
+    let shutterSpeeds2 = [125, 200, 400, 500, 1000, 2000, 5000]
     
     var body: some View {
         HStack {
