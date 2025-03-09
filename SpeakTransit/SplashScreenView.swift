@@ -8,15 +8,23 @@
 import SwiftUI
 
 struct SplashScreenView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         VStack {
-            Text("SpeakTransit")
+            Text("RideOnTime")
                 .font(.largeTitle)
                 .bold()
-                .foregroundStyle(.black)
-            Image("SpeakTransitLogo")
-            Text("Covnerting Transport Screen Text\ninto Clear, Audible Speech.")
-                .font(.body)
+                .foregroundStyle(colorScheme == .light ? .charcoalBlue : .vibrantGold)
+            
+            Image(colorScheme == .dark ? "LogoGold" : "LogoBlue")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 177, height: 177)
+                .padding()
+            
+            Text("Covnerting Transport Screen\nText into Clear Text and\nAudible Speech.")
+                .font(.title3)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color(hex: "2F2F2F"))
@@ -24,7 +32,7 @@ struct SplashScreenView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(edges: .all)
         .background(
-            LinearGradient(colors: [.white, Color(hex: "#DFDFDF")], startPoint: .top, endPoint: .bottom)
+            colorScheme == .light ? .vibrantGold : .charcoalBlue
         )
     }
 }
