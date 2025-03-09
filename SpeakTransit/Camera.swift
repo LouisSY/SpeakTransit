@@ -19,6 +19,7 @@ class Camera: NSObject {
     private var photoOutput: AVCapturePhotoOutput?
     private var videoOutput: AVCaptureVideoDataOutput?
     private var sessionQueue: DispatchQueue!
+    @Published var capturedImage: UIImage? // store the captured photo
     
     private var allCaptureDevices: [AVCaptureDevice] {
         AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTrueDepthCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInWideAngleCamera, .builtInUltraWideCamera], mediaType: .video, position: .unspecified).devices
@@ -300,7 +301,7 @@ class Camera: NSObject {
                 print("White Balance Support: \(captureDevice!.isWhiteBalanceModeSupported(.locked) ? "Yes" : "No")")
                 
                 // set the exposure time
-                self.setShutterSpeed(CMTimeMake(value: 1, timescale: 100)) // 1/100s
+                self.setShutterSpeed(CMTimeMake(value: 1, timescale: 30)) // 1/30s
             }
 
             self.configureCaptureSession { success in
@@ -386,12 +387,22 @@ class Camera: NSObject {
 
 extension Camera: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        
         if let error = error {
             logger.error("Error capturing photo: \(error.localizedDescription)")
             return
         }
         addToPhotoStream?(photo)
+        storeCapturedPhoto(photo)
+    }
+    
+    // store captured photo into `capturedImage` variable
+    private func storeCapturedPhoto(_ photo: AVCapturePhoto) {
+        guard let imageData = photo.fileDataRepresentation(),
+              let image = UIImage(data: imageData) else { return }
+        
+        DispatchQueue.main.async {
+            self.capturedImage = image
+        }
     }
 }
 

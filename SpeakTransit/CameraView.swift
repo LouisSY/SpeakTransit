@@ -14,39 +14,48 @@ struct CameraView: View {
     
     private static let barHeightFactor = 0.15
     
-    @State private var currentShutterSpeed: String = "1/100"
-    let shutterSpeeds1 = [1, 3, 5, 10, 15, 30, 50, 60, 100]
-    let shutterSpeeds2 = [125, 200, 400, 500, 1000, 2000, 5000]
+//    @State private var currentShutterSpeed: String = "1/100"
+//    let shutterSpeeds1 = [1, 3, 5, 10, 15, 30, 50, 60, 100]
+//    let shutterSpeeds2 = [125, 200, 400, 500, 1000, 2000, 5000]
     
     var body: some View {
-        HStack {
-            ForEach(shutterSpeeds1, id: \.self) { speed in
-                Button {
-                    currentShutterSpeed = "1/\(speed)"
-                    model.camera.setShutterSpeed(CMTime(value: 1, timescale: CMTimeScale(speed)))
-                } label: {
-                    Text("1/\(String(speed))")
-                        .font(.headline)
-                        .foregroundStyle(currentShutterSpeed == "1/\(speed)" ? .red : .gray)
-                        .fontWeight(currentShutterSpeed == "1/\(speed)" ? .bold : .regular)
-                }
-            }
+//        HStack {
+//            ForEach(shutterSpeeds1, id: \.self) { speed in
+//                Button {
+//                    currentShutterSpeed = "1/\(speed)"
+//                    model.camera.setShutterSpeed(CMTime(value: 1, timescale: CMTimeScale(speed)))
+//                } label: {
+//                    Text("1/\(String(speed))")
+//                        .font(.headline)
+//                        .foregroundStyle(currentShutterSpeed == "1/\(speed)" ? .red : .gray)
+//                        .fontWeight(currentShutterSpeed == "1/\(speed)" ? .bold : .regular)
+//                }
+//            }
+//        }
+//        
+//        HStack {
+//            ForEach(shutterSpeeds2, id: \.self) { speed in
+//                Button {
+//                    currentShutterSpeed = "1/\(speed)"
+//                    model.camera.setShutterSpeed(CMTime(value: 1, timescale: CMTimeScale(speed)))
+//                } label: {
+//                    Text("1/\(String(speed))")
+//                        .font(.headline)
+//                        .foregroundStyle(currentShutterSpeed == "1/\(speed)" ? .red : .gray)
+//                        .fontWeight(currentShutterSpeed == "1/\(speed)" ? .bold : .regular)
+//                }
+//            }
+//        }
+        
+        if model.camera.capturedImage == nil {
+            cameraControls
+        } else {
+            ExtractTextView(model: model)
         }
         
-        HStack {
-            ForEach(shutterSpeeds2, id: \.self) { speed in
-                Button {
-                    currentShutterSpeed = "1/\(speed)"
-                    model.camera.setShutterSpeed(CMTime(value: 1, timescale: CMTimeScale(speed)))
-                } label: {
-                    Text("1/\(String(speed))")
-                        .font(.headline)
-                        .foregroundStyle(currentShutterSpeed == "1/\(speed)" ? .red : .gray)
-                        .fontWeight(currentShutterSpeed == "1/\(speed)" ? .bold : .regular)
-                }
-            }
-        }
-        
+    }
+    
+    private var cameraControls: some View {
         NavigationStack {
             GeometryReader { geometry in
                 ViewfinderView(image: $model.viewfinderImage)
@@ -87,22 +96,24 @@ struct CameraView: View {
             
             Spacer()
             
-            NavigationLink {
-                PhotoCollectionView(photoCollection: model.photoCollection)
-                    .onAppear {
-                        model.camera.isPreviewPaused = true
-                    }
-                    .onDisappear {
-                        model.camera.isPreviewPaused = false
-                    }
-            } label: {
-                Label {
-                    Text("Gallery")
-                } icon: {
-                    ThumbnailView(image: model.thumbnailImage)
-                }
-            }
+            // photo library view
+//            NavigationLink {
+//                PhotoCollectionView(photoCollection: model.photoCollection)
+//                    .onAppear {
+//                        model.camera.isPreviewPaused = true
+//                    }
+//                    .onDisappear {
+//                        model.camera.isPreviewPaused = false
+//                    }
+//            } label: {
+//                Label {
+//                    Text("Gallery")
+//                } icon: {
+//                    ThumbnailView(image: model.thumbnailImage)
+//                }
+//            }
             
+            // camera capture button
             Button {
                 model.camera.takePhoto()
             } label: {
@@ -120,13 +131,14 @@ struct CameraView: View {
                 }
             }
             
-            Button {
-                model.camera.switchCaptureDevice()
-            } label: {
-                Label("Switch Camera", systemImage: "arrow.triangle.2.circlepath")
-                    .font(.system(size: 36, weight: .bold))
-                    .foregroundColor(.white)
-            }
+            // switch camera
+//            Button {
+//                model.camera.switchCaptureDevice()
+//            } label: {
+//                Label("Switch Camera", systemImage: "arrow.triangle.2.circlepath")
+//                    .font(.system(size: 36, weight: .bold))
+//                    .foregroundColor(.white)
+//            }
             
             Spacer()
             
