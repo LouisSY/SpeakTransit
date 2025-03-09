@@ -49,6 +49,11 @@ struct CameraView: View {
         
         if model.camera.capturedImage == nil {
             cameraControls
+                .onDisappear {
+                    Task {
+                        model.camera.stop()
+                    }
+                }
         } else {
             ExtractTextView(model: model)
         }

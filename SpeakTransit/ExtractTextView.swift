@@ -94,6 +94,9 @@ struct ExtractTextView: View {
                 if !infos.isEmpty || !errorString.isEmpty {
                     Button {
                         model.camera.capturedImage = nil
+                        Task {
+                            await model.camera.start()
+                        }
                         self.infos.removeAll()
                         self.errorString.removeAll()
                     } label: {

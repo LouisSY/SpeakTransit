@@ -301,6 +301,7 @@ class Camera: NSObject {
                 print("White Balance Support: \(captureDevice!.isWhiteBalanceModeSupported(.locked) ? "Yes" : "No")")
                 
                 // set the exposure time
+                print("Set shutter speed to 1/30s")
                 self.setShutterSpeed(CMTimeMake(value: 1, timescale: 30)) // 1/30s
             }
 
