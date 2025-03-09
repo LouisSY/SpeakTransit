@@ -14,39 +14,110 @@ struct ExtractTextView: View {
     
     @State private var infos: [UpcomingVehicleInfo] = []
     
+    @State private var errorString: String = ""
+    
     var body: some View {
-        let capturedImage = model.camera.capturedImage ?? UIImage(named: "TestImage")
-        
-        Image(uiImage: capturedImage ?? UIImage())
-            .resizable()
-            .scaledToFit()
-            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .padding()
-            .onAppear {
-                extractText(from: capturedImage ?? UIImage()) { extractedText, error in
-                    DispatchQueue.main.async {
-                        guard error == nil else {
-                            // Handle error appropriately, for example by showing an alert
-                            return
-                        }
-                        
-                        let structuredText = parseUpcomingVehicleInfo(from: extractedText)
-                        withAnimation(.easeInOut) {
-                            self.infos = structuredText
+        ZStack {
+            Color.charcoalBlue
+                .ignoresSafeArea(edges: .all)
+            
+            VStack {
+                let capturedImage = model.camera.capturedImage ?? UIImage(named: "TestImage")
+                
+                customBorder
+                
+                Image(uiImage: capturedImage ?? UIImage())
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .frame(height: 300)
+                    .padding()
+                    .onAppear {
+                        extractText(from: capturedImage ?? UIImage()) { extractedText, error in
+                            DispatchQueue.main.async {
+                                guard error == nil else {
+                                    self.errorString = error!
+                                    return
+                                }
+
+                                let structuredText = parseUpcomingVehicleInfo(from: extractedText)
+                                
+                                if structuredText.isEmpty {
+                                    withAnimation(.easeInOut) {
+                                        self.infos = []
+                                        self.errorString = "No text detected in the image."
+                                    }
+                                } else {
+                                    withAnimation(.easeInOut) {
+                                        self.infos = structuredText
+                                    }
+                                }
+                            }
                         }
                     }
+                
+                customBorder
+                
+                // display info
+                if infos.isEmpty && errorString.isEmpty {
+                    Text("Please wait...")
+                        .font(.largeTitle)
+                        .fontWeight(.black)
+                        .foregroundStyle(.vibrantGold)
+                } else if !infos.isEmpty {
+                    ScrollView {
+                        ForEach(infos) { info in
+                            infoDisplay(info: info)
+                        }
+                    }
+                    .scrollIndicators(.visible)
+                    .overlay(
+                        VStack {
+                            Spacer()
+                            
+                            Rectangle()
+                                .frame(height: 1) // Bottom border
+                                .foregroundColor(Color(hex: "555555"))
+                        }
+                    )
+                } else if !errorString.isEmpty {
+                    VStack {
+                        Text(errorString)
+                        Text("Please retake the image")
+                    }
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .foregroundStyle(.vibrantGold)
                 }
-            }
-        
-        if infos.isEmpty {
-            Text("Please wait...")
-        } else {
-            ScrollView {
-                ForEach(infos) { info in
-                    infoDisplay(info: info)
+                
+                // retake photo
+                if !infos.isEmpty || !errorString.isEmpty {
+                    Button {
+                        model.camera.capturedImage = nil
+                        self.infos.removeAll()
+                        self.errorString.removeAll()
+                    } label: {
+                        Label("Retake Photo", systemImage: "camera")
+                            .font(.largeTitle)
+                            .fontWeight(.black)
+                            .foregroundStyle(.charcoalBlue)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .fill(.vibrantGold)
+                            )
+                            .padding()
+                    }
                 }
+                
             }
         }
+    }
+    
+    private var customBorder: some View {
+        Rectangle()
+            .frame(height: 1)
+            .foregroundColor(Color(hex: "555555"))
     }
     
     func infoDisplay(info: UpcomingVehicleInfo) -> some View {
