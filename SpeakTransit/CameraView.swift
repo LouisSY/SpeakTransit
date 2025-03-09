@@ -97,21 +97,21 @@ struct CameraView: View {
             Spacer()
             
             // photo library view
-//            NavigationLink {
-//                PhotoCollectionView(photoCollection: model.photoCollection)
-//                    .onAppear {
-//                        model.camera.isPreviewPaused = true
-//                    }
-//                    .onDisappear {
-//                        model.camera.isPreviewPaused = false
-//                    }
-//            } label: {
-//                Label {
-//                    Text("Gallery")
-//                } icon: {
-//                    ThumbnailView(image: model.thumbnailImage)
-//                }
-//            }
+            NavigationLink {
+                PhotoCollectionView(photoCollection: model.photoCollection)
+                    .onAppear {
+                        model.camera.isPreviewPaused = true
+                    }
+                    .onDisappear {
+                        model.camera.isPreviewPaused = false
+                    }
+            } label: {
+                Label {
+                    Text("Gallery")
+                } icon: {
+                    ThumbnailView(image: model.thumbnailImage)
+                }
+            }
             
             // camera capture button
             Button {
@@ -122,23 +122,24 @@ struct CameraView: View {
                 } icon: {
                     ZStack {
                         Circle()
-                            .strokeBorder(.white, lineWidth: 3)
-                            .frame(width: 62, height: 62)
+                            .strokeBorder(.white, lineWidth: 4)
+                            .frame(width: 120, height: 120)
                         Circle()
                             .fill(.white)
-                            .frame(width: 50, height: 50)
+                            .frame(width: 100, height: 100)
                     }
                 }
             }
             
             // switch camera
-//            Button {
-//                model.camera.switchCaptureDevice()
-//            } label: {
-//                Label("Switch Camera", systemImage: "arrow.triangle.2.circlepath")
-//                    .font(.system(size: 36, weight: .bold))
-//                    .foregroundColor(.white)
-//            }
+            Button {
+                model.camera.switchCaptureDevice()
+            } label: {
+                Label("Switch Camera", systemImage: "arrow.triangle.2.circlepath")
+                    .font(.system(size: 36, weight: .bold))
+                    .foregroundColor(.white)
+            }
+            .opacity(0)
             
             Spacer()
             
