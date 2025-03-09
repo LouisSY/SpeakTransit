@@ -27,7 +27,7 @@ struct SplashScreenView: View {
                 .font(.title3)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Color(hex: "2F2F2F"))
+                .foregroundStyle(colorScheme == .light ? .charcoalBlue : .vibrantGold)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(edges: .all)
