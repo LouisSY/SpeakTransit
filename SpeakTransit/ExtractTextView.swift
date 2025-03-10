@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Vision
+import AVFoundation
 
 struct ExtractTextView: View {
     
@@ -22,18 +23,18 @@ struct ExtractTextView: View {
                 .ignoresSafeArea(edges: .all)
             
             VStack {
-                let capturedImage = model.camera.capturedImage ?? UIImage(named: "TestImage")
+                let capturedImage = model.camera.capturedImage ?? UIImage()
                 
                 customBorder
                 
-                Image(uiImage: capturedImage ?? UIImage())
+                Image(uiImage: capturedImage)
                     .resizable()
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .frame(height: 300)
                     .padding()
                     .onAppear {
-                        extractText(from: capturedImage ?? UIImage()) { extractedText, error in
+                        extractText(from: capturedImage) { extractedText, error in
                             DispatchQueue.main.async {
                                 guard error == nil else {
                                     self.errorString = error!
@@ -71,24 +72,25 @@ struct ExtractTextView: View {
                         }
                     }
                     .scrollIndicators(.visible)
-                    .overlay(
-                        VStack {
-                            Spacer()
-                            
-                            Rectangle()
-                                .frame(height: 1) // Bottom border
-                                .foregroundColor(Color(hex: "555555"))
-                        }
-                    )
+                    .onAppear {
+                        TextToSpeech.readTextAloud(infos: infos)
+                    }
                 } else if !errorString.isEmpty {
-                    VStack {
+                    VStack(alignment: .leading) {
                         Text(errorString)
-                        Text("Please retake the image")
+                        Text("Please retake the image.")
                     }
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .foregroundStyle(.vibrantGold)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear {
+                        TextToSpeech.readTextAloud(error: errorString)
+                        TextToSpeech.readTextAloud(error: "Please retake the image.")
+                    }
                 }
+                
+                customBorder
                 
                 // retake photo
                 if !infos.isEmpty || !errorString.isEmpty {

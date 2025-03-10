@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1A0BE68F2D73633C00241BC1 /* MijickCamera in Frameworks */ = {isa = PBXBuildFile; productRef = 1A0BE68E2D73633C00241BC1 /* MijickCamera */; };
-		1A96A22B2D7E431F00F0AF73 /* UpcomingVehicleInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A96A22A2D7E431F00F0AF73 /* UpcomingVehicleInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +31,6 @@
 		1A0BE6602D73632C00241BC1 /* SpeakTransit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakTransit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0BE6702D73632D00241BC1 /* SpeakTransitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpeakTransitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0BE67A2D73632D00241BC1 /* SpeakTransitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpeakTransitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1A96A22A2D7E431F00F0AF73 /* UpcomingVehicleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingVehicleInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -82,7 +80,6 @@
 		1A0BE6572D73632B00241BC1 = {
 			isa = PBXGroup;
 			children = (
-				1A96A22A2D7E431F00F0AF73 /* UpcomingVehicleInfo.swift */,
 				1A0BE6622D73632C00241BC1 /* SpeakTransit */,
 				1A0BE6732D73632D00241BC1 /* SpeakTransitTests */,
 				1A0BE67D2D73632D00241BC1 /* SpeakTransitUITests */,
@@ -248,7 +245,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A96A22B2D7E431F00F0AF73 /* UpcomingVehicleInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -49,6 +49,9 @@ struct CameraView: View {
         
         if model.camera.capturedImage == nil {
             cameraControls
+                .onAppear {
+                    TextToSpeech.readTextAloud(error: "Please point your camera at a Sign Board to start")
+                }
                 .onDisappear {
                     Task {
                         model.camera.stop()
@@ -128,10 +131,10 @@ struct CameraView: View {
                     ZStack {
                         Circle()
                             .strokeBorder(.white, lineWidth: 4)
-                            .frame(width: 120, height: 120)
+                            .frame(width: 100, height: 100)
                         Circle()
                             .fill(.white)
-                            .frame(width: 100, height: 100)
+                            .frame(width: 80, height: 80)
                     }
                 }
             }
