@@ -17,7 +17,7 @@ func parseUpcomingVehicleInfo(from textArray: [String]) -> [UpcomingVehicleInfo]
     var upcomingVehicleInfos: [UpcomingVehicleInfo] = []
     
     for text in textArray {
-        if text.lowercased().contains("stratford") {
+        if let firstChar = text.first, firstChar.isNumber, text.dropFirst().first == " ", !text.contains("min") {
             // Look for destination information
             upcomingVehicleInfos.append(UpcomingVehicleInfo(destination: text, waitingTime: ""))
         } else if text.lowercased().contains("min") {
