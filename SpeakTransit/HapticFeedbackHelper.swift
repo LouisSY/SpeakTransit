@@ -11,7 +11,7 @@ import UIKit
 
 class HapticFeedbackHelper {
     
-    static func isDeviceInSilentMode() -> Bool {
+    static var isDeviceInSilentMode: Bool {
         let audioSession = AVAudioSession.sharedInstance()
         
         if audioSession.secondaryAudioShouldBeSilencedHint {
@@ -22,11 +22,9 @@ class HapticFeedbackHelper {
     }
     
     static func provideHapticFeedback(style: UIImpactFeedbackGenerator.FeedbackStyle = .medium) {
-        if isDeviceInSilentMode() {
-            let generator = UIImpactFeedbackGenerator(style: style)
-            generator.prepare()
-            generator.impactOccurred()
-        }
+        let generator = UIImpactFeedbackGenerator(style: style)
+        generator.prepare()
+        generator.impactOccurred()
     }
     
     static func provideHapticFeedback(style: UIImpactFeedbackGenerator.FeedbackStyle = .medium, duration: TimeInterval) {

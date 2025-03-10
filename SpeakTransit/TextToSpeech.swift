@@ -13,7 +13,9 @@ class TextToSpeech {
     private static var synthesizer = AVSpeechSynthesizer()
 
     static func readTextAloud(infos: [UpcomingVehicleInfo]) {
-        HapticFeedbackHelper.provideHapticFeedback(style: .light, duration: 5.0)
+        if HapticFeedbackHelper.isDeviceInSilentMode {
+            HapticFeedbackHelper.provideHapticFeedback(style: .light, duration: 5.0)
+        }
         for info in infos {
             let utterance = AVSpeechUtterance(string: info.destination + " " + info.waitingTime)
             utterance.rate = 0.5
@@ -24,7 +26,9 @@ class TextToSpeech {
     }
 
     static func readTextAloud(error: String) {
-        HapticFeedbackHelper.provideHapticFeedback(style: .light, duration: 5.0)
+        if HapticFeedbackHelper.isDeviceInSilentMode {
+            HapticFeedbackHelper.provideHapticFeedback(style: .light, duration: 5.0)
+        }
         let utterance = AVSpeechUtterance(string: error)
         utterance.rate = 0.5
         utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
